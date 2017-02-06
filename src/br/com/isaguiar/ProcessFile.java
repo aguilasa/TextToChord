@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import static br.com.isaguiar.Utils.*;
+import static br.com.isaguiar.Consts.*;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -20,7 +21,8 @@ import org.apache.commons.io.FileUtils;
  */
 public class ProcessFile {
 
-    private File file;
+    private static final String LINE_BREAK = "<br>";
+	private File file;
     private String tone;
     private List<String> processed = new ArrayList<>();
 
@@ -30,12 +32,21 @@ public class ProcessFile {
             List<String> lines = FileUtils.readLines(file, Charset.forName("ISO_8859_1"));
             processTone();
             processLines(lines);
+            saveFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void processTone() {
+    private void saveFile() {
+    	try {
+			FileUtils.writeLines(new File(PATH_FILES.concat("\\out\\").concat(file.getName())), processed);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void processTone() {
         System.out.println(file.getName());
         String[] split = file.getName().split("_|\\.");
         tone = split[1];
@@ -53,7 +64,7 @@ public class ProcessFile {
         for (FromTo fromTo : fromToChords) {
             intro = intro.replace(fromTo.getFrom(), fromTo.getTo());
         }
-        processed.add(intro.concat("\r\n"));
+        processed.add(intro.concat(LINE_BREAK));
     }
 
     private void processChords(List<String> lines) {
@@ -70,7 +81,7 @@ public class ProcessFile {
                     }
                 }
             }
-            processed.add(line.concat("\r\n"));
+            processed.add(line.concat(LINE_BREAK));
         }
         System.out.println(processed);
     }

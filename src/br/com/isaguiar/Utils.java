@@ -17,7 +17,9 @@ import java.util.Set;
  */
 public class Utils {
 
-    public static int getSequenceByTone(String aTone, String aChord) {
+    private static final String TONE_FORMAT = "{%s}";
+
+	public static int getSequenceByTone(String aTone, String aChord) {
 
         if (aChord.equals("A#")) {
             aChord = "Bb";
@@ -138,7 +140,7 @@ public class Utils {
 
         if (isSingleChord(aChord)) {
             int index = getSequenceByTone(aTone, aChord);
-            fromTo.setTo(String.format("{%s}", index));
+            fromTo.setTo(String.format(TONE_FORMAT, index));
         } else if (isSharp(aChord) || isFlat(aChord)) {
             String chordAux = aChord;
             if (aChord.length() > 2) {
@@ -146,16 +148,18 @@ public class Utils {
             }
 
             int index = getSequenceByTone(aTone, chordAux);
-            String toAux = String.format("{%s}", index);
+            String toAux = String.format(TONE_FORMAT, index);
             toAux = aChord.replace(chordAux, toAux);
             fromTo.setTo(toAux);
         } else {
             String chordAux = aChord.substring(0, 1);
             int index = getSequenceByTone(aTone, chordAux);
-            String toAux = String.format("{%s}", index);
+            String toAux = String.format(TONE_FORMAT, index);
             toAux = aChord.replace(chordAux, toAux);
             fromTo.setTo(toAux);
         }
+        
+        fromTo.setTo(String.format("<b>%s</b>", fromTo.getTo()));
 
         return fromTo;
     }
