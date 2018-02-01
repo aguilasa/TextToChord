@@ -17,21 +17,22 @@ import org.apache.commons.io.FileUtils;
  */
 public class Main {
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        
-       Collection<File> listFiles = FileUtils.listFiles(new File(PATH_FILES), new String[] {"txt"}, false);
-       for (File file : listFiles) {
-           ProcessFile process = new ProcessFile();
-           process.process(file);
-       }
-       
-       
-//       ProcessFile process = new ProcessFile();
-//       process.process(new File(PATH_FILES.concat("\\Você pode ter_A.txt")));
-  
-    }
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		String path = args.length > 0 ? args[0] : PATH_FILES;
+
+		Collection<File> listFiles = FileUtils.listFiles(new File(path), new String[] { "txt" }, false);
+		for (File file : listFiles) {
+			ProcessFile process = new ProcessFile();
+			process.process(file);
+		}
+
+		// ProcessFile process = new ProcessFile();
+		// process.process(new File(PATH_FILES.concat("\\Você pode ter_A.txt")));
+
+	}
 
 }
