@@ -26,7 +26,7 @@ public class Main {
 
 		Collection<File> listFiles = FileUtils.listFiles(new File(path), new String[] { "txt" }, false);
 		for (File file : listFiles) {
-			ProcessFile process = new ProcessFile();
+			ProcessFile process = new ProcessFile(path.concat("\\out\\"));
 			process.process(file);
 		}
 
