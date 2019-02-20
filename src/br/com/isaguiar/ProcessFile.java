@@ -15,6 +15,7 @@ import java.util.Set;
 import static br.com.isaguiar.Utils.*;
 import static br.com.isaguiar.Consts.*;
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 
 /**
  * @author Ingmar.Aguiar
@@ -24,7 +25,11 @@ public class ProcessFile {
 	private static final String LINE_BREAK = "<br>";
 	private File file;
 	private String tone;
+	private String name;
+	private String artist;
+	private boolean minor;
 	private List<String> processed = new ArrayList<>();
+	private StringBuilder processedSb = new StringBuilder();
 	private String outPath = "";
 
 	public ProcessFile() {
@@ -39,27 +44,49 @@ public class ProcessFile {
 		try {
 			this.file = file;
 			List<String> lines = FileUtils.readLines(file, Charset.forName("ISO_8859_1"));
-			processTone();
+			processName();
 			processLines(lines);
 			saveFile();
+			saveFileJson();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	private void saveFile() {
-		try {
+		try {	
 			String fileName = getOutPath().concat(file.getName());
 			FileUtils.writeLines(new File(fileName), processed);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	private void saveFileJson() {
+		try {
+			JSONObject json = new JSONObject();
+			json.put("id", "{id}");
+			json.put("name", name);
+			json.put("artist", artist);
+			json.put("name", name);
+			json.put("tone", tone);
+			json.put("original", tone);
+			json.put("minor", minor);
+			json.put("chords", processedSb.toString());
+			String fileName = getOutPath().concat(file.getName()).replace(".txt", ".json");
+			FileUtils.write(new File(fileName), json.toString(4), Charset.forName("ISO_8859_1"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	private void processTone() {
+	private void processName() {
 		System.out.println(file.getName());
-		String[] split = file.getName().split("_|\\.");
-		tone = split[1];
+		String[] split = file.getName().split(";|\\.");
+		name = split[0];
+		artist = split[1];
+		tone = split[2];
+		minor = split[3].trim().equalsIgnoreCase("t");
 	}
 
 	private void processLines(List<String> lines) {
@@ -74,7 +101,9 @@ public class ProcessFile {
 		for (FromTo fromTo : fromToChords) {
 			intro = intro.replace(fromTo.getFrom(), fromTo.getTo());
 		}
-		processed.add(intro.concat(LINE_BREAK));
+		String line = intro.concat(LINE_BREAK);
+		processed.add(line);
+		processedSb.append(line);
 	}
 
 	private void processChords(List<String> lines) {
@@ -91,9 +120,10 @@ public class ProcessFile {
 					}
 				}
 			}
-			processed.add(line.concat(LINE_BREAK));
+			String processedLine = line.concat(LINE_BREAK);
+			processed.add(processedLine);
+			processedSb.append(processedLine);
 		}
-		System.out.println(processed);
 	}
 
 	public void writeProcessed() {
