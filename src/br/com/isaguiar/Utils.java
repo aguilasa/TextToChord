@@ -27,6 +27,8 @@ public class Utils {
 			aChord = "C#";
 		} else if (aChord.equals("D#")) {
 			aChord = "Eb";
+		} else if (aChord.equals("Ab")) {
+			aChord = "G#";
 		}
 
 		List<String> sequences = SEQUENCES.get(aTone);
@@ -164,11 +166,26 @@ public class Utils {
 		return fromTo;
 	}
 
+	private static boolean isNumber(String value) {
+		try {
+			Integer.valueOf(value);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean isLineOfChords(String line) {
 		String[] split = line.split("\\s+|\\/|\\(|\\)");
+		boolean last = false;
 		for (String s : split) {
 			if (!s.trim().isEmpty() && !isValidChord(s) && !isValidMarker(s)) {
+				if (last && isNumber(s)) {
+					continue;
+				}
 				return false;
+			} else {
+				last = true;
 			}
 		}
 

@@ -23,61 +23,74 @@ import org.json.JSONObject;
 public class ProcessFile {
 
 	private static final String LINE_BREAK = "<br>";
+	private int id = 0;
 	private File file;
 	private String tone;
 	private String name;
 	private String artist;
-	private boolean minor;
+	private String minor;
 	private List<String> processed = new ArrayList<>();
 	private StringBuilder processedSb = new StringBuilder();
 	private String outPath = "";
+	public boolean saveText = true;
+	public boolean saveJson = true;
 
 	public ProcessFile() {
 
 	}
 
-	public ProcessFile(String outPath) {
+	public ProcessFile(int id, String outPath) {
+		this.id = id;
 		this.outPath = outPath;
 	}
 
 	public void process(File file) {
 		try {
 			this.file = file;
-			List<String> lines = FileUtils.readLines(file, Charset.forName("ISO_8859_1"));
+			List<String> lines = FileUtils.readLines(file, Charset.forName("UTF-8"));
 			processName();
 			processLines(lines);
-			saveFile();
-			saveFileJson();
+			if (saveText) {
+				saveFile();
+			}
+			if (saveJson) {
+				saveFileJson();
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	private void saveFile() {
-		try {	
+		try {
 			String fileName = getOutPath().concat(file.getName());
 			FileUtils.writeLines(new File(fileName), processed);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void saveFileJson() {
 		try {
-			JSONObject json = new JSONObject();
-			json.put("id", "{id}");
-			json.put("name", name);
-			json.put("artist", artist);
-			json.put("name", name);
-			json.put("tone", tone);
-			json.put("original", tone);
-			json.put("minor", minor);
-			json.put("chords", processedSb.toString());
+			JSONObject json = getJson();
 			String fileName = getOutPath().concat(file.getName()).replace(".txt", ".json");
-			FileUtils.write(new File(fileName), json.toString(4), Charset.forName("ISO_8859_1"));
+			FileUtils.write(new File(fileName), json.toString(4), Charset.forName("UTF-8"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public JSONObject getJson() {
+		JSONObject json = new JSONObject();
+		json.put("id", id);
+		json.put("name", name);
+		json.put("artist", artist);
+		json.put("name", name);
+		json.put("tone", tone);
+		json.put("original", tone);
+		json.put("minor", minor);
+		json.put("chords", processedSb.toString());
+		return json;
 	}
 
 	private void processName() {
@@ -86,7 +99,7 @@ public class ProcessFile {
 		name = split[0];
 		artist = split[1];
 		tone = split[2];
-		minor = split[3].trim().equalsIgnoreCase("t");
+		minor = split[3].trim().equalsIgnoreCase("t") ? "m" : "";
 	}
 
 	private void processLines(List<String> lines) {
