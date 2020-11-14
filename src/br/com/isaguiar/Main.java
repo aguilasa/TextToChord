@@ -26,13 +26,16 @@ public class Main {
 
 		String path = args.length > 0 ? args[0] : PATH_FILES;
 
-		ProcessFile process2 = new ProcessFile();
-		process2.process(new File(path.concat("\\Graça soberana;Paulo César Baruk;F;f.txt")));
+//		ProcessFile process2 = new ProcessFile();
+//		process2.process(new File(path.concat("\\Graça soberana;Paulo César Baruk;F;f.txt")));
 
 		StringBuilder sb = new StringBuilder();
 		int id = 0;
 		Collection<File> listFiles = FileUtils.listFiles(new File(path), new String[] { "txt" }, false);
 		for (File file : listFiles) {
+			if (file.getName().equalsIgnoreCase("base.txt")) {
+				continue;
+			}
 			ProcessFile process = new ProcessFile(++id, path.concat("\\out\\"));
 			process.saveText = false;
 			process.saveJson = true;

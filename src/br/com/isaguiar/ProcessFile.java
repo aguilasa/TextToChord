@@ -48,7 +48,7 @@ public class ProcessFile {
 		try {
 			this.file = file;
 			List<String> lines = FileUtils.readLines(file, Charset.forName("UTF-8"));
-			processName();
+			processName(lines);
 			processLines(lines);
 			if (saveText) {
 				saveFile();
@@ -93,13 +93,12 @@ public class ProcessFile {
 		return json;
 	}
 
-	private void processName() {
+	private void processName(List<String> lines) {
 		System.out.println(file.getName());
-		String[] split = file.getName().split(";|\\.");
-		name = split[0];
-		artist = split[1];
-		tone = split[2];
-		minor = split[3].trim().equalsIgnoreCase("t") ? "m" : "";
+		name = lines.remove(0);
+		artist = lines.remove(0);
+		tone = lines.remove(0);
+		minor = lines.remove(0).trim().equalsIgnoreCase("t") ? "m" : "";
 	}
 
 	private void processLines(List<String> lines) {
@@ -121,7 +120,7 @@ public class ProcessFile {
 
 	private void processChords(List<String> lines) {
 		for (String line : lines) {
-			line = line.trim();
+			//line = line.trim();
 
 			if (!line.isEmpty()) {
 				if (isLineOfChords(line)) {
