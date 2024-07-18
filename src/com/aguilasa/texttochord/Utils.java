@@ -50,15 +50,15 @@ public class Utils {
 		aWord = aWord.trim();
 		for (String c : Consts.MARKERS) {
 			if (c.trim().equalsIgnoreCase(aWord)) {
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	public static boolean isValidChord(String aChord) {
 		aChord = aChord.trim();
-		if (aChord.length() >= 1) {
+		if (!aChord.isEmpty()) {
 			if (isSingleChord(aChord)) {
 				return inBasicChords(aChord);
 			}
@@ -97,7 +97,7 @@ public class Utils {
 	public static Set<String> getLineChords(String line) {
 		Set<String> list = new LinkedHashSet<>();
 
-		String[] split = line.split("\\s|\\/|\\(|\\)");
+		String[] split = line.split("\\s|/|\\(|\\)");
 		for (String s : split) {
 			if (isValidChord(s)) {
 				list.add(s);
@@ -111,7 +111,7 @@ public class Utils {
 		Set<FromTo> fromToChords = new LinkedHashSet<>();
 
 		for (String chord : lineChords) {
-			if (!isValidMarker(chord)) {
+			if (isValidMarker(chord)) {
 				FromTo fromTo = processFromTo(chord, aTone);
 				fromToChords.add(fromTo);
 			}
@@ -174,10 +174,10 @@ public class Utils {
 	}
 
 	public static boolean isLineOfChords(String line) {
-		String[] split = line.split("\\s+|\\/|\\(|\\)");
+		String[] split = line.split("\\s+|/|\\(|\\)");
 		boolean last = false;
 		for (String s : split) {
-			if (!s.trim().isEmpty() && !isValidChord(s) && !isValidMarker(s)) {
+			if (!s.trim().isEmpty() && !isValidChord(s) && isValidMarker(s)) {
 				if (last && isNumber(s)) {
 					continue;
 				}
