@@ -5,13 +5,14 @@
  */
 package com.aguilasa.texttochord;
 
-import static com.aguilasa.texttochord.Consts.PATH_FILES;
+import static com.aguilasa.texttochord.model.Consts.PATH_FILES;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collection;
 
+import com.aguilasa.texttochord.utils.ProcessFile;
 import org.apache.commons.io.FileUtils;
 
 /**

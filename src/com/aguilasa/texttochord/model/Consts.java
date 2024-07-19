@@ -3,7 +3,7 @@
  *
  * Copyright 2017 Senior Ltda. All rights reserved.
  */
-package com.aguilasa.texttochord;
+package com.aguilasa.texttochord.model;
 
 import java.util.Arrays;
 import java.util.HashMap;

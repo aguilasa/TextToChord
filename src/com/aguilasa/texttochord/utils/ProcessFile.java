@@ -3,20 +3,22 @@
  *
  * Copyright 2017 Senior Ltda. All rights reserved.
  */
-package com.aguilasa.texttochord;
+package com.aguilasa.texttochord.utils;
 
+import com.aguilasa.texttochord.model.FromTo;
 import com.aguilasa.texttochord.model.SongFileChords;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.aguilasa.texttochord.Consts.PATH_FILES;
+import static com.aguilasa.texttochord.model.Consts.PATH_FILES;
 import static com.aguilasa.texttochord.utils.Utils.*;
 
 /**
@@ -30,8 +32,8 @@ public class ProcessFile {
 	private String name;
 	private String artist;
 	private String minor;
-	private List<String> processed = new ArrayList<>();
-	private StringBuilder processedSb = new StringBuilder();
+	private final List<String> processed = new ArrayList<>();
+	private final StringBuilder processedSb = new StringBuilder();
 	private String outPath = "";
 	public boolean saveText = true;
 	public boolean saveJson = true;
@@ -47,7 +49,7 @@ public class ProcessFile {
 	public void process(File file) {
 		try {
 			this.file = file;
-			List<String> lines = FileUtils.readLines(file, Charset.forName("UTF-8"));
+			List<String> lines = FileUtils.readLines(file, StandardCharsets.UTF_8);
 			processName(lines);
 			processLines(lines);
 			if (saveText) {

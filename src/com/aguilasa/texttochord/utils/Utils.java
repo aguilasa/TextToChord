@@ -5,8 +5,8 @@
  */
 package com.aguilasa.texttochord.utils;
 
-import com.aguilasa.texttochord.Consts;
-import com.aguilasa.texttochord.FromTo;
+import com.aguilasa.texttochord.model.Consts;
+import com.aguilasa.texttochord.model.FromTo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
