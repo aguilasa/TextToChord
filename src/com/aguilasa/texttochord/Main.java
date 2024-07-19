@@ -1,8 +1,3 @@
-/*
- * Created on 2 de fev de 2017.
- *
- * Copyright 2017 Senior Ltda. All rights reserved.
- */
 package com.aguilasa.texttochord;
 
 import com.aguilasa.texttochord.utils.ProcessFile;
