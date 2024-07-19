@@ -5,6 +5,7 @@
  */
 package com.aguilasa.texttochord;
 
+import com.aguilasa.texttochord.model.SongFileChords;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -16,7 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static com.aguilasa.texttochord.Consts.PATH_FILES;
-import static com.aguilasa.texttochord.Utils.*;
+import static com.aguilasa.texttochord.utils.Utils.*;
 
 /**
  * @author Ingmar.Aguiar
